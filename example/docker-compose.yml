@@ -1,0 +1,29 @@
+version: '3'
+services:
+  fast_orm:
+    build: .
+    volumes:
+      - .:/code
+    ports:
+      - "5000:5000"
+    depends_on:
+      - fast_orm_postgres
+    environment:
+      - POSTGRES_USER=fast_orm
+      - POSTGRES_PASSWORD=fast_orm
+      - POSTGRES_NAME=fast_orm_db
+      - POSTGRES_HOST=fast_orm_postgres
+      - POSTGRES_PORT=5432
+
+  fast_orm_postgres:
+    image: postgres:latest
+    container_name: fast_orm_postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./.ignore/postgres/postgres:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_NAME=fast_orm_db
+      - POSTGRES_PASSWORD=fast_orm
+      - POSTGRES_USER=fast_orm
+      - POSTGRES_DB=fast_orm_db
